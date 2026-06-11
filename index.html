@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -21,8 +22,8 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Cairo', 'sans-serif'], /* خط عصري للواجهة */
-                        serif: ['Amiri', 'serif'],     /* خط كلاسيكي رسمي للمستند */
+                        sans: ['Cairo', 'sans-serif'], 
+                        serif: ['Amiri', 'serif'],     
                     },
                     colors: {
                         dafisRed: '#dc2626',
@@ -35,8 +36,10 @@
     </script>
 
     <style>
-        /* أنماط واجهة المستخدم */
         body { background-color: #e5e7eb; scroll-behavior: smooth; }
+        
+        /* Transition Classes */
+        .fade-container { transition: opacity 0.4s ease-in-out; opacity: 1; }
         
         .form-section { 
             background: white; 
@@ -64,11 +67,14 @@
             background-color: #fff;
             box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15); 
         }
+        .input-field:invalid:focus {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15); 
+        }
         
         label { display: block; font-size: 0.95rem; font-weight: 700; color: #374151; margin-bottom: 0.5rem; }
         .required::after { content: " *"; color: #ef4444; font-weight: bold; }
 
-        /* إشعار الحفظ */
         #toast {
             visibility: hidden;
             min-width: 250px;
@@ -89,15 +95,12 @@
         }
         #toast.show { visibility: visible; opacity: 1; bottom: 40px; }
 
-        /* منطقة المعاينة */
         #preview-overlay {
             display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
             background: #9ca3af;
-            z-index: 50;
-            overflow-y: auto;
+            min-height: 100vh;
             padding-bottom: 2rem;
+            opacity: 0; 
         }
 
         .preview-actions {
@@ -122,71 +125,62 @@
             gap: 2rem;
         }
 
-        /* الإعداد الدقيق لصفحات الـ PDF لتكون صفحتين فقط */
         .pdf-page {
             width: 210mm;
-            height: 297mm; /* ارتفاع ثابت لمنع الصفحات الإضافية */
-            padding: 15mm 20mm; /* تم تقليل الهامش العلوي والسفلي لزيادة مساحة المحتوى */
+            height: 297mm;
+            padding: 15mm 20mm;
             background-color: white;
             font-family: 'Amiri', serif; 
             color: #000;
             box-sizing: border-box;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
-            /* الاعتماد على Flexbox لتثبيت الهامش السفلي أوتوماتيكياً */
             display: flex;
             flex-direction: column;
-            line-height: 1.6; /* تم تصغير تباعد الأسطر */
-            font-size: 13pt; /* تم تصغير الخط الأساسي */
+            line-height: 1.6;
+            font-size: 13pt;
             direction: rtl;
-            overflow: hidden; /* إخفاء أي محتوى زائد يسبب صفحة ثالثة */
+            overflow: hidden; 
             page-break-after: always;
             page-break-inside: avoid;
         }
-        .pdf-page:last-child {
-            page-break-after: auto;
-        }
+        .pdf-page:last-child { page-break-after: auto; }
 
         .pdf-header { text-align: center; font-weight: bold; margin-bottom: 10px; font-size: 13pt; line-height: 1.4; }
         .pdf-title { text-align: center; font-weight: bold; text-decoration: underline; margin-bottom: 15px; font-size: 14pt; }
         
-        /* تنسيق البيانات المدخلة (بدون خطوط متقطعة، فقط غامقة لتبدو مطبوعة باحترافية) */
         .data-insert {
-            font-family: 'Cairo', sans-serif; /* خط أوضح للبيانات المكتوبة */
+            font-family: 'Cairo', sans-serif; 
             font-weight: 800;
             color: #111;
             display: inline-block;
             padding: 0 6px;
-            font-size: 12pt; /* تم تصغير خط البيانات */
-            unicode-bidi: isolate; /* عزل النص لمنع اختلاط الأرقام والحروف الأجنبية مع العربية */
+            font-size: 12pt; 
+            unicode-bidi: isolate; 
         }
 
-        /* تنسيق الجداول في PDF */
-        .pdf-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 11pt; /* تم تصغير خط الجدول */ }
+        .pdf-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 11pt; }
         .pdf-table th, .pdf-table td { border: 1.5px solid black; padding: 6px 4px; text-align: center; }
         .pdf-table th { font-weight: bold; background-color: #f9fafb; font-family: 'Amiri', serif; }
         .pdf-table td { font-family: 'Cairo', sans-serif; font-weight: 600; }
 
-        /* تعديل الملاحظات السفلية لتبقى في الأسفل دائماً */
         .pdf-footer-notes { 
-            font-size: 10pt; /* تم تصغير خط الملاحظات */
-            margin-top: auto; /* يدفع هذا العنصر دائماً إلى أقصى الأسفل */
+            font-size: 10pt; 
+            margin-top: auto; 
             width: 100%;
             border-top: 1px solid #666; 
             padding-top: 8px; 
         }
         
-        /* إعدادات الطباعة الحقيقية */
         @media print {
             @page { size: A4 portrait; margin: 0; }
             body { background: white !important; margin: 0; padding: 0; }
             body > *:not(#preview-overlay) { display: none !important; }
-            #preview-overlay { display: block !important; position: static !important; background: white !important; padding: 0 !important; overflow: visible !important; }
+            #preview-overlay { display: block !important; position: static !important; background: white !important; padding: 0 !important; overflow: visible !important; opacity: 1 !important; }
             .preview-actions { display: none !important; }
             #pdf-template-container { padding: 0; gap: 0; display: block; }
             .pdf-page { margin: 0 !important; box-shadow: none !important; border: none !important; }
         }
 
-        /* شاشة التحميل */
         #loading-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; }
         .spinner { border: 5px solid #f3f3f3; border-top: 5px solid #dc2626; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -204,21 +198,25 @@
     </div>
 
     <!-- واجهة المستخدم (النموذج) -->
-    <div id="ui-container">
+    <div id="ui-container" class="fade-container">
         <header class="bg-dafisDark text-white shadow-xl border-b-4 border-dafisRed sticky top-0 z-40">
             <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
                 <div class="flex items-center gap-4">
-                    <div class="bg-white p-2 rounded-xl shadow-md h-16 w-16 flex items-center justify-center">
-                        <span class="text-dafisRed font-extrabold text-2xl">DAFIS</span>
+                    <div class="bg-white p-1 rounded-xl shadow-md h-16 w-16 flex items-center justify-center overflow-hidden">
+                        <img src="1001614031.jpg" alt="DAFIS Logo" class="h-full w-full object-contain">
                     </div>
                     <div>
                         <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight">نظام إعداد التراخيص</h1>
                         <p class="text-gray-300 text-sm mt-1">بوابة DAFIS SOLUTIONS لتوليد الملفات آلياً</p>
                     </div>
                 </div>
-                <div class="flex gap-3">
+                <div class="flex flex-wrap gap-3 justify-center">
+                    <button type="button" onclick="sendToWhatsApp()" class="text-sm bg-[#25D366] hover:bg-[#1ebe57] px-5 py-2.5 rounded-lg transition text-white font-bold shadow-lg flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.01 2.014c-5.516 0-9.996 4.48-9.996 9.997 0 1.956.51 3.86 1.48 5.534L2.01 22.01l4.604-1.206c1.614.887 3.447 1.353 5.394 1.353 5.516 0 9.996-4.48 9.996-9.996 0-5.517-4.48-9.997-9.996-9.997zm5.634 14.372c-.24.675-1.385 1.282-1.958 1.355-.536.068-1.226.177-3.92-1.026-3.23-1.442-5.32-4.954-5.48-5.17-.162-.218-1.307-1.745-1.307-3.327 0-1.58.825-2.378 1.123-2.695.297-.318.65-.398.866-.398.217 0 .433.003.614.01.187.008.435-.07.674.507.243.587.825 2.014.898 2.16.073.146.122.317.04.535-.08.217-.122.348-.243.494-.122.146-.255.333-.365.46-.12.134-.247.28-.108.52.14.238.625 1.03 1.34 1.666.924.82 1.696 1.074 1.933 1.192.238.12.376.1.517-.06.14-.16.608-.707.77-9.51.162-.196.323-.163.535-.083.212.08 1.342.633 1.57.747.228.113.38.17.435.265.056.096.056.554-.184 1.23z"/></svg>
+                        إرسال لـ WhatsApp
+                    </button>
                     <button type="button" onclick="clearForm()" class="text-sm bg-gray-700 hover:bg-gray-600 px-5 py-2.5 rounded-lg transition text-white font-semibold">إفراغ الحقول</button>
-                    <button type="button" onclick="previewDocument()" class="text-sm bg-dafisRed hover:bg-red-700 px-6 py-2.5 rounded-lg transition text-white font-bold shadow-lg flex items-center gap-2">
+                    <button type="button" onclick="handlePreviewClick()" class="text-sm bg-dafisRed hover:bg-red-700 px-6 py-2.5 rounded-lg transition text-white font-bold shadow-lg flex items-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
                         معاينة واستخراج PDF
                     </button>
@@ -232,6 +230,9 @@
             <div class="bg-white rounded-2xl shadow-sm border border-gray-200 mb-8 overflow-hidden relative">
                 <div class="absolute top-0 right-0 w-2 h-full bg-dafisRed"></div>
                 <div class="p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center md:items-start">
+                    <div class="hidden md:block flex-shrink-0">
+                        <img src="1001614031.jpg" alt="DAFIS Logo" class="h-40 w-40 object-contain p-2 border border-gray-100 rounded-xl shadow-sm">
+                    </div>
                     <div class="flex-1 w-full pr-4">
                         <div class="flex flex-wrap items-center gap-4 mb-4">
                             <h2 class="text-3xl font-black text-dafisDark tracking-wide">دافيس للأنظمة الأمنية الحساسة | DAFIS SOLUTIONS</h2>
@@ -267,11 +268,11 @@
             <div class="bg-blue-50 border-r-4 border-blue-500 p-4 mb-6 rounded-lg shadow-sm flex gap-3">
                 <svg class="w-6 h-6 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 <p class="text-sm text-blue-900 font-bold leading-relaxed">
-                    <strong>تعليمات:</strong> يرجى ملء الخانات أدناه بدقة. بعد الانتهاء اضغط على "معاينة واستخراج PDF" للتحقق من البيانات. سيتم تنسيقها تلقائياً في صفحتين رسميتين عاليتي الجودة. يتم حفظ البيانات في متصفحك تلقائياً.
+                    <strong>تعليمات:</strong> يرجى ملء الخانات أدناه بدقة. بعد الانتهاء اضغط على "معاينة واستخراج PDF" للتحقق من البيانات. سيتم تنسيقها تلقائياً في صفحتين رسميتين عاليتي الجودة.
                 </p>
             </div>
 
-            <form id="dataForm" onsubmit="event.preventDefault();">
+            <form id="dataForm" onsubmit="event.preventDefault(); handlePreviewClick();">
                 
                 <div class="form-section">
                     <h2 class="text-xl font-bold text-dafisDark mb-6 flex items-center gap-2">
@@ -296,16 +297,25 @@
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="required">تاريخ الميلاد</label>
-                                <input type="text" id="ui-birthDate" class="input-field" placeholder="يوم/شهر/سنة" required oninput="saveData()">
+                                <input type="date" id="ui-birthDate" class="input-field" required oninput="saveData()">
                             </div>
                             <div>
-                                <label class="required">مكان الميلاد</label>
-                                <input type="text" id="ui-birthPlace" class="input-field" placeholder="البلدية - الولاية" required oninput="saveData()">
+                                <label class="required">بلدية الميلاد</label>
+                                <input type="text" id="ui-birthCommune" class="input-field" placeholder="اسم البلدية" required oninput="saveData()">
                             </div>
                         </div>
-                        <div>
-                            <label class="required">الجنسية</label>
-                            <input type="text" id="ui-nationality" class="input-field font-bold bg-gray-100" value="جزائرية" required oninput="saveData()">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="required">ولاية الميلاد</label>
+                                <select id="ui-birthWilaya" class="input-field wilaya-select font-bold" required onchange="saveData()">
+                                    <option value="" disabled selected>اختر الولاية...</option>
+                                    <!-- Populated via JS -->
+                                </select>
+                            </div>
+                            <div>
+                                <label class="required">الجنسية</label>
+                                <input type="text" id="ui-nationality" class="input-field font-bold bg-gray-100" value="جزائرية" required oninput="saveData()">
+                            </div>
                         </div>
 
                         <div class="md:col-span-2">
@@ -322,19 +332,25 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         <div class="lg:col-span-2">
                             <label class="required">رقم بطاقة التعريف الوطنية (أو جواز السفر)</label>
-                            <input type="text" id="ui-idNumber" class="input-field" placeholder="رقم الوثيقة" oninput="saveData()">
+                            <input type="text" id="ui-idNumber" class="input-field" placeholder="رقم الوثيقة" required oninput="saveData()">
                         </div>
-                        <div class="lg:col-span-2">
-                            <label class="required">الصادرة عن (البلدية أو الدائرة)</label>
-                            <input type="text" id="ui-idSource" class="input-field" placeholder="مكان الإصدار" oninput="saveData()">
+                        <div>
+                            <label class="required">الصادرة عن (البلدية/الدائرة)</label>
+                            <input type="text" id="ui-idSourceCommune" class="input-field" placeholder="البلدية أو الدائرة" required oninput="saveData()">
+                        </div>
+                        <div>
+                            <label class="required">الولاية</label>
+                            <select id="ui-idSourceWilaya" class="input-field wilaya-select font-bold" required onchange="saveData()">
+                                <option value="" disabled selected>اختر الولاية...</option>
+                            </select>
                         </div>
                         <div class="lg:col-span-2">
                             <label class="required">تاريخ الإصدار</label>
-                            <input type="text" id="ui-idIssueDate" class="input-field" placeholder="يوم/شهر/سنة" oninput="saveData()">
+                            <input type="date" id="ui-idIssueDate" class="input-field" required oninput="saveData()">
                         </div>
                         <div class="lg:col-span-2">
                             <label class="required">تاريخ الانتهاء</label>
-                            <input type="text" id="ui-idExpiryDate" class="input-field" placeholder="يوم/شهر/سنة" oninput="saveData()">
+                            <input type="date" id="ui-idExpiryDate" class="input-field" required oninput="saveData()">
                         </div>
                     </div>
                 </div>
@@ -345,12 +361,12 @@
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label>المهنة</label>
-                            <input type="text" id="ui-profession" class="input-field" placeholder="مثال: تاجر" oninput="saveData()">
+                            <label class="required">المهنة</label>
+                            <input type="text" id="ui-profession" class="input-field" placeholder="مثال: تاجر" required oninput="saveData()">
                         </div>
                         <div>
-                            <label>نوع النشاط / بصفتي مسيراً لشركة</label>
-                            <input type="text" id="ui-company" class="input-field" placeholder="نشاط الشركة أو المحل" oninput="saveData()">
+                            <label class="required">نوع النشاط / بصفتي مسيراً لشركة</label>
+                            <input type="text" id="ui-company" class="input-field" placeholder="نشاط الشركة أو المحل" required oninput="saveData()">
                         </div>
                         <div class="md:col-span-2">
                             <label>اسم ولقب المساهمين (إن وجد)</label>
@@ -358,7 +374,7 @@
                         </div>
                         <div>
                             <label class="required">رقم الهاتف</label>
-                            <input type="text" id="ui-phone" class="input-field font-bold" placeholder="06XXXXXXXX" dir="ltr" style="text-align: right;" oninput="saveData()">
+                            <input type="tel" pattern="0[567][0-9]{8}" title="يرجى إدخال رقم هاتف جزائري صحيح (10 أرقام)" id="ui-phone" class="input-field font-bold" placeholder="06XXXXXXXX" dir="ltr" style="text-align: right;" required oninput="saveData()">
                         </div>
                         <div>
                             <label>البريد الإلكتروني</label>
@@ -397,23 +413,55 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 pt-6 border-t border-gray-100">
                         <div>
                             <label class="required">بلد منشأ التجهيزات</label>
-                            <input type="text" id="ui-origin" class="input-field" value="الصين" oninput="saveData()">
+                            <input type="text" id="ui-origin" class="input-field" value="الصين" required oninput="saveData()">
                         </div>
                         <div>
                             <label class="required">بلد قدوم التجهيزات</label>
-                            <input type="text" id="ui-source" class="input-field" value="الصين" oninput="saveData()">
+                            <input type="text" id="ui-source" class="input-field" value="الصين" required oninput="saveData()">
                         </div>
                         <div>
                             <label class="required">كيفيات نقل التجهيزات</label>
-                            <input type="text" id="ui-transport" class="input-field" placeholder="بري / بحري / جوي" oninput="saveData()">
+                            <input type="text" id="ui-transport" class="input-field" placeholder="بري / بحري / جوي" required oninput="saveData()">
                         </div>
                         <div>
                             <label class="required">مكان التخزين والاستعمال</label>
-                            <input type="text" id="ui-storage" class="input-field" placeholder="نفس العنوان المذكور أعلاه" oninput="saveData()">
+                            <input type="text" id="ui-storage" class="input-field" placeholder="نفس العنوان المذكور أعلاه" required oninput="saveData()">
                         </div>
                         <div class="md:col-span-2">
                             <label class="required">شروط حفظ التجهيزات في مأمن</label>
-                            <input type="text" id="ui-security" class="input-field" placeholder="داخل محل مغلق ومؤمن" oninput="saveData()">
+                            <input type="text" id="ui-security" class="input-field" placeholder="داخل محل مغلق ومؤمن" required oninput="saveData()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section bg-gray-50 border-gray-300">
+                    <h2 class="text-xl font-bold text-dafisDark mb-6 flex items-center gap-2">
+                        <span class="bg-gray-600 w-2 h-6 rounded-full"></span> المرفقات والملفات (اختياري / للتحضير)
+                    </h2>
+
+                    <div class="bg-yellow-50 border-r-4 border-yellow-500 p-4 mb-6 rounded-lg shadow-sm flex gap-3">
+                        <svg class="w-6 h-6 text-yellow-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        <p class="text-sm text-yellow-900 font-bold leading-relaxed">
+                            <strong>تذكير هام جداً:</strong> يجب إرفاق <u>تصريح شرفي مصادق عليه</u> يتضمن التعهد بعدم ربط كاميرات المراقبة بشبكة الإنترنت، ويُسلم للمكتب مع باقي الملفات.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">بطاقة التعريف الوطنية</label>
+                            <input type="file" id="ui-file-id" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-200 file:text-gray-700 hover:file:bg-gray-300 cursor-pointer border border-gray-300 rounded-md bg-white"/>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">شهادة الميلاد</label>
+                            <input type="file" id="ui-file-birth" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-200 file:text-gray-700 hover:file:bg-gray-300 cursor-pointer border border-gray-300 rounded-md bg-white"/>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">بطاقة الإقامة</label>
+                            <input type="file" id="ui-file-residence" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-200 file:text-gray-700 hover:file:bg-gray-300 cursor-pointer border border-gray-300 rounded-md bg-white"/>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">نسخة عن السجل التجاري (إن كان محلاً)</label>
+                            <input type="file" id="ui-file-cr" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-200 file:text-gray-700 hover:file:bg-gray-300 cursor-pointer border border-gray-300 rounded-md bg-white"/>
                         </div>
                     </div>
                 </div>
@@ -424,8 +472,10 @@
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="required">حرر بـ (المدينة)</label>
-                            <input type="text" id="ui-city" class="input-field" value="تبسة" required oninput="saveData()">
+                            <label class="required">حرر بـ (الولاية)</label>
+                            <select id="ui-city" class="input-field wilaya-select font-bold" required onchange="saveData()">
+                                <option value="" disabled selected>اختر الولاية...</option>
+                            </select>
                         </div>
                         <div>
                             <label class="required">في (التاريخ)</label>
@@ -435,7 +485,7 @@
                 </div>
 
                 <div class="flex justify-center mt-10 mb-16">
-                    <button type="button" onclick="previewDocument()" class="bg-dafisRed hover:bg-red-700 text-white text-xl font-bold py-4 px-12 rounded-xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition duration-300 flex items-center gap-3">
+                    <button type="submit" class="bg-dafisRed hover:bg-red-700 text-white text-xl font-bold py-4 px-12 rounded-xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition duration-300 flex items-center gap-3">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
                         إنشاء ومعاينة المستند
                     </button>
@@ -445,7 +495,7 @@
     </div>
 
     <!-- منطقة المعاينة والطباعة (المستند الرسمي المخفي) -->
-    <div id="preview-overlay">
+    <div id="preview-overlay" class="fade-container">
         <div class="preview-actions">
             <button onclick="editDocument()" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2.5 px-6 rounded-lg transition flex items-center gap-2">
                 <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" /></svg>
@@ -529,7 +579,7 @@
 
             <!-- الصفحة الثانية: استمارة المعلومات -->
             <div class="pdf-page" id="pdf-page-2">
-                <div class="pdf-header">الجمهورية الجزائرية الديمقراطية الشعبية<br>وزارة الداخلية والجماعات المحلية والتهيئة العمرانية<br>ولاية تبسة</div>
+                <div class="pdf-header">الجمهورية الجزائرية الديمقراطية الشعبية<br>وزارة الداخلية والجماعات المحلية والتهيئة العمرانية<br>ولاية <span class="data-insert" id="pdf2-header-wilaya" style="font-family: 'Amiri', serif; font-size: 13pt;">...........</span></div>
                 
                 <div class="pdf-title mt-4">استمارة معلومات خاصة بطالب رخصة اقتناء تجهيزات حساسة</div>
 
@@ -581,11 +631,32 @@
     </div>
 
     <script>
-        // التهيئة
+        // مصفوفة الولايات الـ 69 مصححة ومطابقة تماماً للتقسيم الإداري المرفق بالصورة
+        const algWilayas = [
+            "أدرار", "الشلف", "الأغواط", "أم البواقي", "باتنة", "بجاية", "بسكرة", "بشار", "البليدة", "البويرة",
+            "تمنراست", "تبسة", "تلمسان", "تيارت", "تيزي وزو", "الجزائر", "الجلفة", "جيجل", "سطيف", "سعيدة",
+            "سكيكدة", "سيدي بلعباس", "عنابة", "قالمة", "قسنطينة", "المدية", "مستغانم", "المسيلة", "معسكر", "ورقلة",
+            "وهران", "البيض", "إليزي", "برج بوعريريج", "بومرداس", "الطارف", "تندوف", "تيسمسيلت", "الوادي", "خنشلة",
+            "سوق أهراس", "تيبازة", "ميلة", "عين الدفلى", "النعامة", "عين تموشنت", "غرداية", "غليزان", "تيميمون", "برج باجي مختار",
+            "أولاد جلال", "بني عباس", "عين صالح", "عين قزام", "توقرت", "جانت", "المغير", "المنيعة", "آفلو", "بريكة",
+            "القنطرة", "بير العاتر", "العريشة", "قصر الشلالة", "عين وسارة", "مسعد", "قصر البخاري", "بوسعادة", "الأبيض سيدي الشيخ"
+        ];
+
         document.addEventListener("DOMContentLoaded", () => {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('ui-date').value = today;
             
+            // حقن الولايات في القوائم المنسدلة
+            const wilayaSelects = document.querySelectorAll('.wilaya-select');
+            wilayaSelects.forEach(select => {
+                algWilayas.forEach((w, i) => {
+                    const opt = document.createElement('option');
+                    opt.value = w;
+                    opt.text = `${i + 1} - ${w}`;
+                    select.appendChild(opt);
+                });
+            });
+
             // إضافة صف أولي بشكل افتراضي
             addEquipmentRow('كاميرا مراقبة', 'DH-HAC-HDW1500TRQ(-A) DH-HAC-T1A51', 'ج', 'الأول', '1');
             
@@ -593,14 +664,13 @@
             updateDeleteButtons();
         });
 
-        // دوال الحفظ في LocalStorage
         let timeout = null;
         function saveData() {
             clearTimeout(timeout);
             timeout = setTimeout(() => {
                 const inputs = document.querySelectorAll('.input-field');
                 inputs.forEach(input => {
-                    if(input.id) localStorage.setItem(input.id, input.value);
+                    if(input.id && input.type !== 'file') localStorage.setItem(input.id, input.value);
                 });
                 
                 const toast = document.getElementById("toast");
@@ -612,7 +682,7 @@
         function loadData() {
             const inputs = document.querySelectorAll('.input-field');
             inputs.forEach(input => {
-                if(input.id && localStorage.getItem(input.id)) {
+                if(input.id && input.type !== 'file' && localStorage.getItem(input.id)) {
                     input.value = localStorage.getItem(input.id);
                 }
             });
@@ -622,23 +692,25 @@
             localStorage.clear();
             const inputs = document.querySelectorAll('.input-field');
             inputs.forEach(input => {
-                if(input.id !== 'ui-date' && input.id !== 'ui-nationality' && input.id !== 'ui-origin' && input.id !== 'ui-source' && input.id !== 'ui-city') {
+                if(input.id !== 'ui-date' && input.id !== 'ui-nationality' && input.id !== 'ui-origin' && input.id !== 'ui-source') {
                     input.value = '';
                 }
             });
+            document.getElementById('ui-equipment-table-body').innerHTML = '';
+            addEquipmentRow('كاميرا مراقبة', '', 'ج', 'الأول', '1');
+            window.scrollTo(0, 0);
         }
 
-        // إدارة الجدول
-        function addEquipmentRow(des = 'كاميرا مراقبة', nat = '', cat = 'ج', subcat = 'الأول', qty = '1') {
+        function addEquipmentRow(des = '', nat = '', cat = 'ج', subcat = 'الأول', qty = '1') {
             const tbody = document.getElementById('ui-equipment-table-body');
             const row = document.createElement('tr');
             row.className = "bg-white border-b hover:bg-gray-50 transition";
             row.innerHTML = `
-                <td class="px-2 py-2 border-x"><input type="text" class="w-full bg-transparent border-b border-gray-300 focus:border-dafisRed focus:outline-none text-sm font-bold eq-designation py-1" value="${des}"></td>
-                <td class="px-2 py-2 border-x" dir="ltr"><input type="text" class="w-full bg-transparent border-b border-gray-300 focus:border-dafisRed focus:outline-none text-sm text-left eq-nature py-1" placeholder="أدخل الموديل" value="${nat}"></td>
-                <td class="px-2 py-2 border-x"><input type="text" class="w-full bg-transparent border-b border-gray-300 focus:border-dafisRed focus:outline-none text-sm text-center font-bold eq-category py-1" value="${cat}"></td>
-                <td class="px-2 py-2 border-x"><input type="text" class="w-full bg-transparent border-b border-gray-300 focus:border-dafisRed focus:outline-none text-sm text-center font-bold eq-subcategory py-1" value="${subcat}"></td>
-                <td class="px-2 py-2 border-x"><input type="text" class="w-full bg-transparent border-b border-gray-300 focus:border-dafisRed focus:outline-none text-sm text-center font-bold eq-qty py-1" value="${qty}"></td>
+                <td class="px-2 py-2 border-x"><input type="text" class="w-full bg-transparent border-b border-gray-300 focus:border-dafisRed focus:outline-none text-sm font-bold eq-designation py-1" value="${des}" required></td>
+                <td class="px-2 py-2 border-x" dir="ltr"><input type="text" class="w-full bg-transparent border-b border-gray-300 focus:border-dafisRed focus:outline-none text-sm text-left eq-nature py-1" placeholder="أدخل الموديل" value="${nat}" required></td>
+                <td class="px-2 py-2 border-x"><input type="text" class="w-full bg-transparent border-b border-gray-300 focus:border-dafisRed focus:outline-none text-sm text-center font-bold eq-category py-1" value="${cat}" required></td>
+                <td class="px-2 py-2 border-x"><input type="text" class="w-full bg-transparent border-b border-gray-300 focus:border-dafisRed focus:outline-none text-sm text-center font-bold eq-subcategory py-1" value="${subcat}" required></td>
+                <td class="px-2 py-2 border-x"><input type="text" class="w-full bg-transparent border-b border-gray-300 focus:border-dafisRed focus:outline-none text-sm text-center font-bold eq-qty py-1" value="${qty}" required></td>
                 <td class="px-2 py-2 border-x text-center">
                     <button type="button" onclick="removeRow(this)" class="text-red-500 hover:text-red-700 hover:bg-red-50 p-1.5 rounded delete-btn transition" title="حذف">
                         <svg class="h-5 w-5 mx-auto" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
@@ -682,7 +754,6 @@
             return dateString;
         }
 
-        // نقل البيانات وتجهيز ملف الـ PDF
         function bindDataToTemplate() {
             const getValue = id => {
                 const el = document.getElementById(id);
@@ -690,9 +761,7 @@
             };
             const setText = (id, text) => { 
                 const el = document.getElementById(id);
-                if(el) {
-                    el.innerText = text || "........................."; 
-                }
+                if(el) el.innerText = text || "........................."; 
             };
 
             const name = getValue('ui-name');
@@ -700,10 +769,14 @@
             const company = getValue('ui-company');
             const date = formatDate(getValue('ui-date'));
 
+            // تركيب العنوان المركب (مكان الميلاد)
+            const birthPlace = getValue('ui-birthCommune') + " - ولاية " + getValue('ui-birthWilaya');
+            const idSource = "دائرة/بلدية " + getValue('ui-idSourceCommune') + " - " + getValue('ui-idSourceWilaya');
+
             // الصفحة 1
             setText('pdf1-name', name);
-            setText('pdf1-birthDate', getValue('ui-birthDate'));
-            setText('pdf1-birthPlace', getValue('ui-birthPlace'));
+            setText('pdf1-birthDate', formatDate(getValue('ui-birthDate')));
+            setText('pdf1-birthPlace', birthPlace);
             setText('pdf1-nationality', getValue('ui-nationality'));
             setText('pdf1-address', address);
             setText('pdf1-profession', getValue('ui-profession'));
@@ -717,17 +790,18 @@
             setText('pdf1-date', date);
 
             // الصفحة 2
+            setText('pdf2-header-wilaya', getValue('ui-city'));
             setText('pdf2-name', name);
             setText('pdf2-father', getValue('ui-father'));
             setText('pdf2-mother', getValue('ui-mother'));
-            setText('pdf2-birthDate', getValue('ui-birthDate'));
-            setText('pdf2-birthPlace', getValue('ui-birthPlace'));
+            setText('pdf2-birthDate', formatDate(getValue('ui-birthDate')));
+            setText('pdf2-birthPlace', birthPlace);
             setText('pdf2-address', address);
             setText('pdf2-address-company', address);
             setText('pdf2-idNumber', getValue('ui-idNumber'));
-            setText('pdf2-idSource', getValue('ui-idSource'));
-            setText('pdf2-idIssueDate', getValue('ui-idIssueDate'));
-            setText('pdf2-idExpiryDate', getValue('ui-idExpiryDate'));
+            setText('pdf2-idSource', idSource);
+            setText('pdf2-idIssueDate', formatDate(getValue('ui-idIssueDate')));
+            setText('pdf2-idExpiryDate', formatDate(getValue('ui-idExpiryDate')));
             setText('pdf2-nationality', getValue('ui-nationality'));
             setText('pdf2-company', company);
             setText('pdf2-phone', getValue('ui-phone'));
@@ -736,10 +810,17 @@
             setText('pdf2-city', getValue('ui-city'));
             setText('pdf2-date', date);
 
-            // الجدول (تعديل السطر لمنع تباعد الحروف وتمكين عزل النص unicode-bidi وتصغير الخط للإنجليزي)
+            // الجدول
             const uiTableRows = document.querySelectorAll('#ui-equipment-table-body tr');
             const pdfTableBody = document.getElementById('pdf1-table-body');
             pdfTableBody.innerHTML = '';
+
+            // تصغير الخط تلقائياً إذا زادت الأجهزة عن 5 لضمان بقائها في صفحة واحدة
+            if (uiTableRows.length > 5) {
+                pdfTableBody.parentElement.style.fontSize = "9.5pt";
+            } else {
+                pdfTableBody.parentElement.style.fontSize = "11pt";
+            }
 
             uiTableRows.forEach(row => {
                 const des = row.querySelector('.eq-designation').value;
@@ -762,21 +843,71 @@
             });
         }
 
-        function previewDocument() {
+        // الانتقال السلس مع التحقق
+        function handlePreviewClick() {
+            const form = document.getElementById('dataForm');
+            if (!form.checkValidity()) {
+                form.reportValidity(); // إظهار التنبيهات الأصلية للمتصفح
+                return;
+            }
+            
             saveData();
             bindDataToTemplate();
-            document.getElementById('ui-container').style.display = 'none';
-            document.getElementById('preview-overlay').style.display = 'block';
-            window.scrollTo(0,0);
+
+            const uiContainer = document.getElementById('ui-container');
+            const previewOverlay = document.getElementById('preview-overlay');
+
+            uiContainer.style.opacity = 0;
+            setTimeout(() => {
+                uiContainer.style.display = 'none';
+                previewOverlay.style.display = 'block';
+                setTimeout(() => {
+                    previewOverlay.style.opacity = 1;
+                    window.scrollTo(0,0);
+                }, 50);
+            }, 300);
         }
 
         function editDocument() {
-            document.getElementById('ui-container').style.display = 'block';
-            document.getElementById('preview-overlay').style.display = 'none';
-            window.scrollTo(0,0);
+            const uiContainer = document.getElementById('ui-container');
+            const previewOverlay = document.getElementById('preview-overlay');
+
+            previewOverlay.style.opacity = 0;
+            setTimeout(() => {
+                previewOverlay.style.display = 'none';
+                uiContainer.style.display = 'block';
+                setTimeout(() => {
+                    uiContainer.style.opacity = 1;
+                    window.scrollTo(0,0);
+                }, 50);
+            }, 300);
         }
 
-        // تحويل لـ PDF باحترافية
+        // الإرسال إلى واتساب
+        function sendToWhatsApp() {
+            const form = document.getElementById('dataForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            saveData();
+            
+            const name = document.getElementById('ui-name').value;
+            const phone = document.getElementById('ui-phone').value;
+            const wilayaEl = document.getElementById('ui-city');
+            const wilaya = wilayaEl.options[wilayaEl.selectedIndex]?.text || '';
+            
+            let msg = `*طلب إعداد رخصة أمنية جديد*\n\n`;
+            msg += `👤 *الاسم:* ${name}\n`;
+            msg += `📞 *رقم الهاتف:* ${phone}\n`;
+            msg += `📍 *الولاية:* ${wilaya}\n\n`;
+            msg += `(تم تعبئة البيانات عبر البوابة الآلية، المرفقات جاهزة وسيتم إرسالها تباعاً)`;
+            
+            const url = `https://wa.me/213659849656?text=${encodeURIComponent(msg)}`;
+            window.open(url, '_blank');
+        }
+
+        // تحويل لـ PDF
         function downloadPDF() {
             const element = document.getElementById('pdf-template-container');
             const name = document.getElementById('ui-name').value || 'رخصة';
@@ -804,3 +935,6 @@
     </script>
 </body>
 </html>
+
+
+```
