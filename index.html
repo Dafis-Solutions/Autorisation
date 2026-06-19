@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نظام إعداد ملف الرخصة - DAFIS SOLUTIONS</title>
     
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- مكتبة تحويل HTML إلى PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -192,6 +195,7 @@
         <h2 class="text-xl font-bold text-dafisDark">جاري المعالجة...</h2>
     </div>
 
+    <!-- نافذة سجل الملفات -->
     <div id="records-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-6 border-b pb-4">
@@ -204,7 +208,8 @@
                 <input type="text" id="search-record" class="input-field" placeholder="ابحث باسم العميل..." oninput="renderRecordsList()">
             </div>
             <div id="records-list" class="space-y-3">
-                </div>
+                <!-- Records will be injected here -->
+            </div>
         </div>
     </div>
 
@@ -221,6 +226,7 @@
                     </div>
                 </div>
                 
+                <!-- أدوات التحكم والنسخ الاحتياطي في الهيدر مبوبة باحترافية -->
                 <div class="flex flex-wrap gap-2 justify-center items-center">
                     <div class="bg-gray-800 p-1.5 rounded-xl flex items-center gap-2 border border-gray-700 shadow-inner">
                         <button type="button" onclick="openRecordsModal()" class="text-xs md:text-sm bg-blue-600 hover:bg-blue-500 px-3 py-2 rounded-lg transition text-white font-bold flex items-center gap-1.5 shadow">
@@ -232,7 +238,7 @@
                             تصدير JSON
                         </button>
                         <label class="cursor-pointer text-xs md:text-sm bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded-lg transition text-white flex items-center gap-1.5" title="استيراد نسخة احتياطية">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0l-4-4m4 4V4"></path></svg>
                             استيراد JSON
                             <input type="file" id="import-json" accept=".json" class="hidden" onchange="importDataJSON(event)">
                         </label>
@@ -306,6 +312,7 @@
 
             <form id="dataForm" onsubmit="event.preventDefault(); handlePreviewClick();">
                 
+                <!-- الأقسام الثلاثة للنموذج -->
                 <div class="form-section">
                     <h2 class="text-xl font-bold text-dafisDark mb-6 flex items-center gap-2">
                         <span class="bg-dafisRed w-2 h-6 rounded-full"></span> معلومات الهوية الشخصية
@@ -433,7 +440,8 @@
                                 </tr>
                             </thead>
                             <tbody id="ui-equipment-table-body">
-                                </tbody>
+                                <!-- Dynamic Rows Injected Here -->
+                            </tbody>
                         </table>
                     </div>
                     <button type="button" onclick="addEquipmentRow()" class="mt-2 text-sm text-dafisRed font-bold flex items-center gap-1 hover:text-red-800 bg-red-50 px-4 py-2.5 rounded-lg transition border border-red-100">
@@ -483,6 +491,7 @@
                     </div>
                 </div>
 
+                <!-- أزرار معالجة البيانات الأساسية منسقة بأيقونات احترافية في الأسفل -->
                 <div class="flex flex-col sm:flex-row flex-wrap justify-center gap-4 mt-10 mb-16">
                     <button type="button" onclick="saveRecordToDB()" class="bg-gray-800 hover:bg-gray-900 text-white text-base md:text-lg font-bold py-3.5 px-6 rounded-xl shadow-md transition duration-300 flex items-center justify-center gap-2.5">
                         <svg class="h-5 w-5 md:h-6 md:w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
@@ -503,6 +512,7 @@
         </main>
     </div>
 
+    <!-- منطقة المعاينة والطباعة الفورية الرسمية المخفية -->
     <div id="preview-overlay" class="fade-container">
         <div class="preview-actions">
             <button onclick="editDocument()" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2.5 px-6 rounded-lg transition flex items-center gap-2">
@@ -520,6 +530,7 @@
         </div>
 
         <div id="pdf-template-container">
+            <!-- الصفحة الأولى -->
             <div class="pdf-page" id="pdf-page-1">
                 <div class="pdf-header">الجمهورية الجزائرية الديمقراطية الشعبية</div>
                 <div class="pdf-title mt-2">
@@ -551,7 +562,8 @@
                         </tr>
                     </thead>
                     <tbody id="pdf1-table-body">
-                        </tbody>
+                        <!-- تُعبأ برمجياً دون الرقم التسلسلي والموديل الداخلي الحساس -->
+                    </tbody>
                 </table>
 
                 <div class="mt-2">
@@ -573,6 +585,7 @@
                 </div>
             </div>
 
+            <!-- الصفحة الثانية -->
             <div class="pdf-page" id="pdf-page-2">
                 <div class="pdf-header">الجمهورية الجزائرية الديمقراطية الشعبية<br>وزارة الداخلية والجماعات المحلية والتهيئة العمرانية<br>ولاية <span class="data-insert" id="pdf2-header-wilaya" style="font-family: 'Amiri', serif; font-size: 13pt;">...........</span></div>
                 
@@ -650,7 +663,7 @@
             msg += `👤 *الاسم واللقب:* ${name}\n`;
             msg += `📞 *رقم الهاتف:* ${phone}\n`;
             msg += `📍 *الولاية المعنية:* ${wilaya}\n\n`;
-            msg += `_(تمت تعبئة هذا الملف بواسطة المنصة الذكية، البيانات جاهزة للمراجعة والطباعة)__`;
+            msg += `_(تمت تعبئة هذا الملف بواسطة المنصة الذكية، البيانات جاهزة للمراجعة والطباعة)_`;
             
             const url = `https://wa.me/213659849656?text=${encodeURIComponent(msg)}`;
             window.open(url, '_blank');
@@ -931,7 +944,7 @@
             const pdfTableBody = document.getElementById('pdf1-table-body');
             pdfTableBody.innerHTML = '';
 
-            // إسقاط حقل الرقم التسلسلي والموديل الداخلي الحساس من ملف الطباعة PDF نهائياً لحفظ السرية
+            // إسقاط حقل الرقم التسلسلي والموديل الداخلي من ملف الطباعة PDF نهائياً لحفظ السرية
             uiTableRows.forEach(row => {
                 const des = row.querySelector('.eq-designation').value;
                 const nat = row.querySelector('.eq-nature').value;
